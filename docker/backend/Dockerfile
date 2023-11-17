@@ -14,4 +14,4 @@ EXPOSE 3000
 
 ENV APP_ENV prod
 
-ENTRYPOINT '/entrypoint.sh'
+ENTRYPOINT "/entrypoint.sh"

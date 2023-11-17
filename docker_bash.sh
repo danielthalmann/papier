@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker exec -ti paper bash
+docker exec -ti papier bash
