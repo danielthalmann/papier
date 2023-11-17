@@ -1,18 +1,18 @@
 version: "3.8"
 services:
   serv:
-    build: ./docker/serv
-    container_name: paper
+    build: ./docker/backend
+    container_name: papier
     ports: 
       - 3000:3000
     volumes:
-      - .:/opt/app
+      - ./backend:/opt/app
     environment:
       APP_ENV: ${APP_ENV-prod}
     depends_on:
       - postgres
     networks:
-      - paper_network
+      - papier_network
   postgres:
     container_name: postgres
     image: postgres
@@ -26,7 +26,7 @@ services:
     volumes:
       - ./database:/var/lib/postgresql/data
     networks:
-      - paper_network
+      - papier_network
 networks:
-  paper_network:
+  papier_network:
     driver: bridge 
