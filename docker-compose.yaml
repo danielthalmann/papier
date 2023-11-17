@@ -2,7 +2,7 @@ version: "3.8"
 services:
   serv:
     build: ./docker/serv
-    container_name: server
+    container_name: paper
     ports: 
       - 3000:3000
     volumes:
@@ -11,6 +11,8 @@ services:
       APP_ENV: ${APP_ENV-prod}
     depends_on:
       - postgres
+    networks:
+      - paper_network
   postgres:
     container_name: postgres
     image: postgres
@@ -18,11 +20,13 @@ services:
     environment:
       POSTGRES_USER: ${DATABASE_USER-postgres}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD-mysecretpassword}
-      POSTGRES_DB: ${DATABASE_NAME-todo}
+      POSTGRES_DB: ${DATABASE_NAME-paper}
     ports:
       - "5432:5432"
     volumes:
       - ./database:/var/lib/postgresql/data
+    networks:
+      - paper_network
 networks:
-  todonetwork:
+  paper_network:
     driver: bridge 
