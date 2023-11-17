@@ -5,6 +5,7 @@ import { UsersModule } from '../users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthGuard } from './auth.guard';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { UsersService } from 'src/users/users.service';
 
 
 @Module({
@@ -12,7 +13,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     UsersModule,
     JwtModule.registerAsync({
       useFactory: async () => {
-        console.log(process.env);
         return {
           global: true,
           secret: process.env.SECRET,

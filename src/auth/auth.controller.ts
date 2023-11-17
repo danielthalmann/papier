@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { SignInDto } from './SignInDto';
 import { AuthGuard } from './auth.guard';
 
-@Controller('auth')
+@Controller('api/auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
@@ -13,7 +13,12 @@ export class AuthController {
     console.log(signInDto);
     return this.authService.signIn(signInDto.username, signInDto.password);
   }
-
+  @HttpCode(HttpStatus.OK)
+  @Get('login')
+  signInGet() {
+   
+    return 'please use post instead get';
+  }
 
   @UseGuards(AuthGuard)
   @Get('profile')
