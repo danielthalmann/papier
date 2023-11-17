@@ -10,7 +10,7 @@ WORKDIR /opt/app
 
 VOLUME /opt/app
 
-EXPOSE 5173
+EXPOSE 3001
 
 ENV APP_ENV prod
 
