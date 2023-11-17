@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+  serv:
+    build: ./docker/serv
+    container_name: server
+    ports: 
+      - 3000:3000
+    volumes:
+      - .:/opt/app
+    environment:
+      APP_ENV: ${APP_ENV-prod}
+    depends_on:
+      - postgres
+  postgres:
+    container_name: postgres
+    image: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DATABASE_USER-postgres}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD-mysecretpassword}
+      POSTGRES_DB: ${DATABASE_NAME-todo}
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./database:/var/lib/postgresql/data
+networks:
+  todonetwork:
+    driver: bridge 
