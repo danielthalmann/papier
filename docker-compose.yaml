@@ -1,6 +1,22 @@
 version: "3.8"
 services:
-  serv:
+  frontend:
+    env_file:
+      - .env
+    image: papier-front
+    build: ./docker/frontend
+    container_name: papier-front
+    ports: 
+      - 3001:5173
+    volumes:
+      - ./backend:/opt/app
+    environment:
+      APP_ENV: ${APP_ENV-prod}
+    depends_on:
+      - backend
+    networks:
+      - papier_network
+  backend:
     env_file:
       - ./backend/.env
     image: papier
