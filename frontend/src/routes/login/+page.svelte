@@ -3,7 +3,6 @@
     import { onMount } from "svelte";
     import { PUBLIC_BACKEND_URL } from '$env/static/public';
     import type { Credentials } from "../../types/Credentials";
-    
     let formElement : HTMLFormElement;
     let credentials : Credentials = {email: '', password: ''};
 
