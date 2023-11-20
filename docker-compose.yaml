@@ -6,28 +6,29 @@ services:
     image: papier-front
     build: ./docker/frontend
     container_name: papier-front
-    ports: 
+    ports:
       - 3001:3001
     volumes:
       - ./frontend:/opt/app
     environment:
       APP_ENV: ${APP_ENV-prod}
+      PUBLIC_BACKEND_URL: ${PUBLIC_BACKEND_URL-http://localhost:3000}
     depends_on:
       - backend
     networks:
       - papier_network
   backend:
-    env_file:
-      - ./backend/.env
     image: papier
     build: ./docker/backend
     container_name: papier
-    ports: 
+    ports:
       - 3000:3000
     volumes:
       - ./backend:/opt/app
     environment:
       APP_ENV: ${APP_ENV-prod}
+      SECRET: ${SECRET-B3cm2Ehjk72bhEeAX1VS}
+      DATABASE_URL : ${DATABASE_URL-"postgresql://postgres:mysecretpassword@postgres:5432/papier"}
     depends_on:
       - postgres
     networks:
@@ -48,4 +49,4 @@ services:
       - papier_network
 networks:
   papier_network:
-    driver: bridge 
+    driver: bridge
