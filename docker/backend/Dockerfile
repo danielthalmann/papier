@@ -12,6 +12,8 @@ VOLUME /opt/app
 
 EXPOSE 3000
 
-ENV APP_ENV prod
+ENV APP_ENV=prod 
+
+USER node
 
 ENTRYPOINT "/entrypoint.sh"

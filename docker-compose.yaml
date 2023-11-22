@@ -44,7 +44,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./database:/var/lib/postgresql/data
+      - ./docker/volumes/database:/var/lib/postgresql/data
     networks:
       - papier_network
 networks:

@@ -12,6 +12,6 @@ VOLUME /opt/app
 
 EXPOSE 3001
 
-ENV APP_ENV prod
+ENV APP_ENV=prod
 
 ENTRYPOINT "/entrypoint.sh"
