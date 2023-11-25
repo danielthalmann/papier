@@ -7,7 +7,7 @@ export default defineConfig({
 		include: ['src/**/*.{test,spec}.{js,ts}']
 	},
     server: {
-        port: 3001,
+        port: 3000,
         host: true,
         strictPort: true,
 		// this part of configuration is needed to docker
