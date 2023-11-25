@@ -12,7 +12,7 @@
 
       console.log(credentials);
 
-      const json = http.postData(PUBLIC_BACKEND_URL + '/api/auth/login', credentials);
+      const json = http.postData(PUBLIC_BACKEND_URL + '/api/users/register', credentials);
 
       console.log(json);
         
