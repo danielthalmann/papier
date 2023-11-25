@@ -1,6 +1,7 @@
 version: "3.8"
 services:
   frontend:
+    user: "${UID}:${GID}"
     env_file:
       - .env
     image: papier-front
@@ -18,6 +19,7 @@ services:
     networks:
       - papier_network
   backend:
+    user: "${UID}:${GID}"
     image: papier
     build: ./docker/backend
     container_name: papier

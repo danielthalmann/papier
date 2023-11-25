@@ -3,34 +3,20 @@
     import { onMount } from "svelte";
     import { PUBLIC_BACKEND_URL } from '$env/static/public';
     import type { Credentials } from "../../types/Credentials";
-    let formElement : HTMLFormElement;
+    import { http } from "$lib/ClientHttp";
+
+    
     let credentials : Credentials = {email: '', password: ''};
 
-    onMount(() => {
+    const loginForm = () => {
 
-      formElement?.addEventListener('submit', async function(event) {
-        event.preventDefault();
+      console.log(credentials);
 
-        const response = await fetch(PUBLIC_BACKEND_URL + '/api/auth/login', {
-            method: "POST", // *GET, POST, PUT, DELETE, etc.
-            mode: "cors", // no-cors, *cors, same-origin
-            cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: "same-origin", // include, *same-origin, omit
-            headers: {
-                "Content-Type": "application/json",
-            },
-            redirect: "follow", // manual, *follow, error
-            body: JSON.stringify(credentials), // le type utilisé pour le corps doit correspondre à l'en-tête "Content-Type"
-        });
+      const json = http.postData(PUBLIC_BACKEND_URL + '/api/auth/login', credentials);
 
-        if (response.status != 200) {
-            console.log(response);
-        }else
-            console.log(response.json().then());
-      });
-
-    });
-
+      console.log(json);
+        
+    };
 
 </script>
 
@@ -41,11 +27,11 @@
   </div>
 
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-    <form  bind:this={formElement} class="space-y-6" action="#" method="POST">
+    <form on:submit|preventDefault={loginForm} class="space-y-6" action="#" method="POST">
       <div>
         <label for="email" class="block text-sm font-medium leading-6 text-white">Email address</label>
         <div class="mt-2">
-          <input id="email" name="email" type="email" value={credentials.email} autocomplete="email" required class="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 p-2">
+          <input id="email" name="email" type="email" bind:value={credentials.email} autocomplete="email" required class="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 p-2">
         </div>
       </div>
 
@@ -57,7 +43,7 @@
           </div>
         </div>
         <div class="mt-2">
-          <input id="password" name="password" type="password" value={credentials.password} autocomplete="current-password" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 p-2">
+          <input id="password" name="password" type="password" bind:value={credentials.password} autocomplete="current-password" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 p-2">
         </div>
       </div>
 
