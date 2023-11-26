@@ -1,8 +1,6 @@
-import { Body, Controller, Post, HttpCode, HttpStatus } from '@nestjs/common';
+import { Body, Controller, Post, HttpCode, HttpStatus, HttpException } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { Prisma } from '@prisma/client';
 import { Credentials } from '../types/Credentials';
-import * as bcrypt from 'bcrypt';
 
 
 @Controller('api/users')
@@ -14,22 +12,13 @@ export class UserController {
   async register(@Body() credential: Credentials) {
 
     if (credential.password != credential.confirm)
-      return ;
-    
-    let hash = await bcrypt.hash(credential.password, process.env.SECRET);
-    const user : Prisma.UserCreateInput = {
-      name: credential.email,
-      email: credential.email,
-      password: hash,
-      last_login: new Date(),
-      updated_at: new Date(),
-      created_at: new Date()
-    };
-    
-    this.userService.createUser(user);
-   
-    return user;
-    
+      throw new HttpException('The password and the confirmation password is not same', HttpStatus.FORBIDDEN);
+
+    if (await this.userService.emailExists(credential.email))
+      throw new HttpException('Email exists', HttpStatus.FORBIDDEN);
+     
+    return this.userService.createUser(credential.email, credential.password);
+        
   }
 
 
