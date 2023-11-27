@@ -64,4 +64,9 @@ export class UsersService {
     return this.prisma.user.findFirst({ where : {email : email}});
   }
 
+  async passwordCheck(myPlaintextPassword: string, hash:string) : Promise<boolean>
+  {
+    return bcrypt.compare(myPlaintextPassword, hash);
+  }
+
 }

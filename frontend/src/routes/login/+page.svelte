@@ -8,11 +8,11 @@
     
     let credentials : Credentials = {email: '', password: ''};
 
-    const loginForm = () => {
+    const loginForm = async() => {
 
       console.log(credentials);
 
-      const json = http.postData(PUBLIC_BACKEND_URL + '/api/auth/login', credentials);
+      const json = await http.postData(PUBLIC_BACKEND_URL + '/api/auth/login', credentials);
 
       console.log(json);
         
@@ -39,7 +39,7 @@
         <div class="flex items-center justify-between">
           <label for="password" class="block text-sm font-medium leading-6 text-white">Password</label>
           <div class="text-sm">
-            <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500">Forgot password?</a>
+            <!-- <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500">Forgot password?</a> -->
           </div>
         </div>
         <div class="mt-2">
@@ -54,7 +54,7 @@
 
     <p class="mt-10 text-center text-sm text-gray-500">
       Not a member?
-      <a href="#" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">create a new user</a>
+      <a href="/register" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">create a new user</a>
     </p>
   </div>
 </div>

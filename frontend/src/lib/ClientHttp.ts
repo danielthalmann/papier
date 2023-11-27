@@ -37,10 +37,10 @@ class ClientHttp
     }
 
 
-    async fetchData(url : string, method : string, data: object = {}) : any
+    async fetchData(url : string, method : string, data: object = {}) : Promise<null | object>
     {
 
-        let result;
+        let result = null;
 
         await fetch(url, {
             method: method, // *GET, POST, PUT, DELETE, etc.
@@ -54,12 +54,14 @@ class ClientHttp
             body: JSON.stringify(data) // le type utilisé pour le corps doit correspondre à l'en-tête "Content-Type"
         }).then((resp :Response) => {
 
-            if (resp.status == 401)
-            {
-                result = {};
+            console.log(resp);
+
+            if (resp.status == 201) {
+                result = resp.json();
             }
 
-            result = resp.json();
+            return null;
+
         });
 
         return result;

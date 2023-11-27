@@ -9,9 +9,11 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  signIn(@Body() signInDto: SignInDto) {
+  async signIn(@Body() signInDto: SignInDto) {
     console.log(signInDto);
-    return this.authService.signIn(signInDto.username, signInDto.password);
+    let r =  await this.authService.signIn(signInDto.email, signInDto.password);
+    console.log(r);
+    return r;
   }
   @HttpCode(HttpStatus.OK)
   @Get('login')

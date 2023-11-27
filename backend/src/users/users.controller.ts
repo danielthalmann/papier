@@ -7,7 +7,7 @@ import { Credentials } from '../types/Credentials';
 export class UserController {
   constructor(private userService: UsersService) {}
 
-  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.CREATED)
   @Post('register')
   async register(@Body() credential: Credentials) {
 
@@ -15,7 +15,7 @@ export class UserController {
       throw new HttpException('The password and the confirmation password is not same', HttpStatus.FORBIDDEN);
 
     if (await this.userService.emailExists(credential.email))
-      throw new HttpException('Email exists', HttpStatus.FORBIDDEN);
+      throw new HttpException('Email exists', HttpStatus.BAD_REQUEST);
      
     return this.userService.createUser(credential.email, credential.password);
         
