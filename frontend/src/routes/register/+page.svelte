@@ -8,15 +8,15 @@
     
     let credentials : Credentials = {email: '', password: '', confirm: ''};
 
-    let response : {}
-
     const registerForm = async () => {
 
       console.log(credentials);
 
-      const user = await http.postData(PUBLIC_BACKEND_URL + '/api/users/register', credentials);
+      const response : Response = await http.postData(PUBLIC_BACKEND_URL + '/api/users/register', credentials);
 
-      if(user != null) {
+      console.log(response);
+
+      if(response.status == 201) {
         document.location.href = '/login';
       }
         

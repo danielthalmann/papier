@@ -12,9 +12,9 @@
 
       console.log(credentials);
 
-      const json = await http.postData(PUBLIC_BACKEND_URL + '/api/auth/login', credentials);
+      const response : Response = await http.postData(PUBLIC_BACKEND_URL + '/api/auth/login', credentials);
 
-      console.log(json);
+      console.log(await response.json());
         
     };
 
