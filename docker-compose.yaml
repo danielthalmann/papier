@@ -5,7 +5,7 @@ services:
     env_file:
       - .env
     image: papier-front
-    build: ./docker/frontend
+    build: ./frontend
     container_name: papier-front
     ports:
       - 8000:3000
@@ -21,7 +21,7 @@ services:
   backend:
     user: "${UID}:${GID}"
     image: papier
-    build: ./docker/backend
+    build: ./backend
     container_name: papier
     ports:
       - 3000:3000
@@ -46,7 +46,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./docker/volumes/database:/var/lib/postgresql/data
+      - ./volumes/database:/var/lib/postgresql/data
     networks:
       - papier_network
 networks:

@@ -2,7 +2,7 @@ FROM node:21
 
 RUN npm install -g npm
 
-COPY entrypoint.sh /
+COPY docker/entrypoint.sh /
 
 RUN mkdir -p /opt/app && chmod 777 /entrypoint.sh
 
@@ -12,8 +12,6 @@ VOLUME /opt/app
 
 EXPOSE 3000
 
-ENV APP_ENV=prod 
-
-USER node
+ENV APP_ENV=prod
 
 ENTRYPOINT "/entrypoint.sh"
