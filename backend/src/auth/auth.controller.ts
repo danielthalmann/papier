@@ -15,6 +15,7 @@ export class AuthController {
     console.log(r);
     return r;
   }
+  
   @HttpCode(HttpStatus.OK)
   @Get('login')
   signInGet() {
