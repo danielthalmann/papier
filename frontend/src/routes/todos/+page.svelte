@@ -5,7 +5,7 @@
     import type { Credentials } from "../../types/Credentials";
     import { http } from "$lib/ClientHttp";
 
-    let todos;
+    let todos: Array<any> = [];
 
     onMount(async () => {
 
@@ -42,7 +42,11 @@
       </div>
 
       <div class=" m-5 p-2 border border-dashed border-gray-700 rounded-xl text-gray-200 h-screen">
-
+        <ul>
+        {#each todos as todo}
+          <li>{todo.title}</li>
+        {/each}
+        </ul>
         test
 
       </div>
