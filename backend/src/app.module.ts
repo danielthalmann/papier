@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { PrismaService } from './prisma.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { TodosModule } from './todos/todos.module';
 
 
 @Module({
@@ -16,7 +17,7 @@ import { join } from 'path';
       rootPath: join(__dirname, '..', 'public'),
     }),
     AuthModule, 
-    UsersModule, 
+    UsersModule, TodosModule, 
   ],
   //controllers: [AppController],
   providers: [AppService],
