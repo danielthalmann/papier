@@ -1,18 +1,19 @@
 
 class ClientHttp
 {
-    token: string = '';
-    refreshToken: string = '';
 
     ClientHttp() 
     {
-        this.token = window.sessionStorage.getItem('token') ?? '';
-        this.refreshToken = window.sessionStorage.getItem('refreshToken') ?? '';
+    }
+
+    getToken()
+    {
+        return window.sessionStorage.getItem('token') ?? '';
     }
 
     setToken(t: string)
     {
-        this.token = t;
+        window.sessionStorage.setItem('token', t);
     }
     
     /**
@@ -48,27 +49,32 @@ class ClientHttp
         let result = null;
 
         let header : HeadersInit;
+        let reqInit : RequestInit;
         
-        if (this.token != '') {
-            header = {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + this.token
-            };
-        } else {
-            header = {
-                "Content-Type": "application/json"
-            };
-        }     
+        header = {
+            "Content-Type": "application/json"
+        };
+    
+        if (this.getToken() != '') {
+            header.Authorization = "Bearer " + this.getToken();
+        }
 
-        return fetch(url, {
+        reqInit = {
             method: method, // *GET, POST, PUT, DELETE, etc.
             mode: "cors", // no-cors, *cors, same-origin
             cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
             credentials: "same-origin", // include, *same-origin, omit
             headers: header,
             redirect: "follow", // manual, *follow, error
-            body: JSON.stringify(data) // le type utilisé pour le corps doit correspondre à l'en-tête "Content-Type"
-        }).then((resp :Response) => {
+        };
+
+        if (method == 'POST') {
+            reqInit.body = JSON.stringify(data); 
+        }
+
+        console.log(reqInit);
+        
+        return fetch(url, reqInit).then((resp :Response) => {
 
             if (resp.status == 401) {
                 result = resp.json();
@@ -79,12 +85,6 @@ class ClientHttp
         });
     
     }
-    
-    
-    fetch3() {
-    
-    }
-
 
 }
 
