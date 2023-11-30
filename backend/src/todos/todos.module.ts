@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TodosController } from './todos.controller';
 import { TodosService } from './todos.service';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthModule } from 'src/auth/auth.module';
+import { PrismaService } from 'src/prisma.service';
 
 @Module({
+  imports: [AuthModule],
+  providers: [TodosService, PrismaService],
   controllers: [TodosController],
-  providers: [TodosService, AuthGuard]
 })
 export class TodosModule {}
