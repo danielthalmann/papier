@@ -37,11 +37,12 @@ model ActivityLog {
 
 model Todo {
   id              Int @id @default(autoincrement())
+  title           String
   user_id         Int
   project_id      Int?
   order           Int?
   priority        String?
-  completed       Boolean @default(false)
+  completed_at    DateTime?
   due_at          DateTime?
   updated_at      DateTime
   created_at      DateTime

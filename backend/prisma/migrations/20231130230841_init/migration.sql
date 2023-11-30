@@ -28,11 +28,12 @@ CREATE TABLE "activity_logs" (
 -- CreateTable
 CREATE TABLE "todos" (
     "id" SERIAL NOT NULL,
+    "title" TEXT NOT NULL,
     "user_id" INTEGER NOT NULL,
     "project_id" INTEGER,
     "order" INTEGER,
     "priority" TEXT,
-    "completed" BOOLEAN NOT NULL DEFAULT false,
+    "completed_at" TIMESTAMP(3),
     "due_at" TIMESTAMP(3),
     "updated_at" TIMESTAMP(3) NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL,
