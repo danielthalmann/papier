@@ -14,7 +14,13 @@
 
       const response : Response = await http.postData(PUBLIC_BACKEND_URL + '/api/auth/login', credentials);
 
-      console.log(await response.json());
+      if (response.status == 200)
+      {
+        let json = (await response.json());
+        http.setToken(json.access_token);
+        document.location.href = "/todos";
+      }
+
         
     };
 
