@@ -5,12 +5,16 @@
     import type { Credentials } from "../../types/Credentials";
     import { http } from "$lib/ClientHttp";
 
-    
-    let credentials : Credentials = {email: '', password: ''};
+    let todos;
 
-    onMount(() => {
+    onMount(async () => {
 
-      console.log("mount");
+      const response : Response = await http.getData(PUBLIC_BACKEND_URL + '/api/todos');
+
+      if(response.status == 200) {
+        todos = await response.json();
+        console.log(todos);
+      }
 
     });
 
