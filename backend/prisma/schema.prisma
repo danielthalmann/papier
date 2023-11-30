@@ -12,22 +12,64 @@ datasource db {
 
 model User {
   id              Int             @id @default(autoincrement())
-  name            String?         @unique
+  name            String?         
   email           String          @unique
   password        String?
   first_name      String?
   last_name       String?
   image_url       String?
-  last_login      DateTime
+  last_login      DateTime?
   updated_at      DateTime
   created_at      DateTime
   log             ActivityLog[]
+  @@map("users")
 }
 
 model ActivityLog {
-  id      Int  @id @default(autoincrement())
-  user_id Int
-  user    User @relation(fields: [user_id], references: [id])
-  type    String
-  datas   Json?
+  id              Int  @id @default(autoincrement())
+  user_id         Int
+  user            User @relation(fields: [user_id], references: [id])
+  type            String
+  datas           Json?
+  created_at      DateTime
+  @@map("activity_logs")
+}
+
+model Todo {
+  id              Int @id @default(autoincrement())
+  user_id         Int
+  project_id      Int?
+  order           Int?
+  priority        String?
+  completed       Boolean @default(false)
+  due_at          DateTime?
+  updated_at      DateTime
+  created_at      DateTime
+  tags            TagTodo[]
+  @@map("todos")
+}
+
+model Project {
+  id              Int @id @default(autoincrement())
+  user_id         Int
+  name            String
+  @@map("projects")
+}
+
+model Tag {
+  id              Int @id @default(autoincrement())
+  user_id         Int
+  name            String
+  todos           TagTodo[]
+  @@map("tags")
+}
+
+model TagTodo {
+  id              Int @id @default(autoincrement())
+  todo_id         Int
+  todo            Todo  @relation(fields: [todo_id], references: [id])
+  tag_id          Int
+  tag             Tag   @relation(fields: [tag_id], references: [id])
+
+  @@map("tag_todo")
 }
