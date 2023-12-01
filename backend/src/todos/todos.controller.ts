@@ -1,6 +1,8 @@
-import { Controller, Get, HttpCode, HttpStatus, Param, Query, Req, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Request, UseGuards } from '@nestjs/common';
 import { TodosService } from './todos.service';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { TodoNewDto } from './dto/TodoNewDto';
+import { RequestWithUser } from 'src/types/RequestWithUser';
 
 @Controller('api/todos')
 export class TodosController {
@@ -10,18 +12,19 @@ export class TodosController {
 
     @UseGuards(AuthGuard)
     @Get()
-    async all() {
+    async all(@Request() req : RequestWithUser) {
   
-      return this.todoService.all();
+      return this.todoService.all(req.user.sub);
 
     }
     
     @HttpCode(HttpStatus.CREATED)
     @UseGuards(AuthGuard)
-    @Get('create')
-    async create(@Query() allQueryParams: { title?: string, page?: string }, @Request() req : Request & {user :{sub: number}} ) {
+    @Post('create')
+    // @Query() allQueryParams: { title?: string, page?: string }
+    async create(@Body() newTodo: TodoNewDto, @Request() req : RequestWithUser ) {
 
-      return this.todoService.createTodo(allQueryParams.title, req.user.sub);
+      return this.todoService.createTodo(newTodo.title, req.user.sub);
 
     }
    

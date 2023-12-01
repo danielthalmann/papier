@@ -1,4 +1,19 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get, Request, UseGuards } from '@nestjs/common';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { RequestWithUser } from 'src/types/RequestWithUser';
+import { ProjectsService } from './projects.service';
 
-@Controller('projects')
-export class ProjectsController {}
+@Controller('api/projects')
+export class ProjectsController {
+
+    constructor(private projectService: ProjectsService) {}
+
+    @UseGuards(AuthGuard)
+    @Get()
+    async all(@Request() req : RequestWithUser) {
+  
+      return this.projectService.all(req.user.sub);
+
+    }
+
+}
