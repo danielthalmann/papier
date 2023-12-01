@@ -38,7 +38,7 @@ export class UsersService {
     return true;
   }
 
-  async createUser(email: string, password: string): Promise<UserOrm> {
+  async create(email: string, password: string): Promise<UserOrm> {
 
     const salt = bcrypt.genSaltSync();
     const hash = await bcrypt.hash(password, salt);

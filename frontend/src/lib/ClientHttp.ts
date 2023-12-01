@@ -38,9 +38,32 @@ class ClientHttp
         let params : Array<string> = new Array();
         for (const x in data) {
             params.push(x + "=" + (data[x] ?? ''));
-        }        
-        return this.fetchData(url + '?' + params.join('&'), "GET");
+        }
+        let p = '';
+        if (params.length > 0) {
+            p = '?' + params.join('&');
+        }      
+        return this.fetchData(url + p, "GET");
     }
+
+    /**
+     * execute query delete at specified url
+     * 
+     * @param url url of the resource
+     * @param data data passed to url
+     */
+    async deleteData(url : string, data: Array<string> = []) : Promise<Response>
+    {
+        let params : Array<string> = new Array();
+        for (const x in data) {
+            params.push(x + "=" + (data[x] ?? ''));
+        }
+        let p = '';
+        if (params.length > 0) {
+            p = '?' + params.join('&');
+        }
+        return this.fetchData(url + p, "DELETE");
+    }    
 
 
     async fetchData(url : string, method : string, data: object = {}) : Promise<Response>

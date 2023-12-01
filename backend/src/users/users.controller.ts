@@ -17,7 +17,7 @@ export class UserController {
     if (await this.userService.emailExists(credential.email))
       throw new HttpException('Email exists', HttpStatus.BAD_REQUEST);
      
-    return this.userService.createUser(credential.email, credential.password);
+    return this.userService.create(credential.email, credential.password);
         
   }
 
