@@ -9,6 +9,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { TodosModule } from './todos/todos.module';
 import { ProjectsModule } from './projects/projects.module';
+import { TagsModule } from './tags/tags.module';
 
 
 @Module({
@@ -21,6 +22,7 @@ import { ProjectsModule } from './projects/projects.module';
     UsersModule, 
     TodosModule,
     ProjectsModule,
+    TagsModule, 
   ],
   //controllers: [AppController],
   providers: [AppService],
