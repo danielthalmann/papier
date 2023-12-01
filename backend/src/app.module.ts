@@ -8,6 +8,7 @@ import { PrismaService } from './prisma.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { TodosModule } from './todos/todos.module';
+import { ProjectsModule } from './projects/projects.module';
 
 
 @Module({
@@ -18,7 +19,8 @@ import { TodosModule } from './todos/todos.module';
     }),
     AuthModule, 
     UsersModule, 
-    TodosModule, 
+    TodosModule,
+    ProjectsModule,
   ],
   //controllers: [AppController],
   providers: [AppService],
