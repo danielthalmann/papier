@@ -2,8 +2,8 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { PUBLIC_BACKEND_URL } from '$env/static/public';
-    import type { Credentials } from "../../types/Credentials";
     import { http } from "$lib/ClientHttp";
+    
 
     let todos: Array<any> = [];
 
@@ -17,6 +17,66 @@
       }
 
     });
+
+    const focusNext = (id: number, directionUp: boolean = false) => {
+      let node : HTMLElement | null = document.getElementById('list_' + id);
+      do {
+        if (directionUp) {
+          node = <HTMLElement>node?.previousSibling;
+        } else {
+          node = <HTMLElement>node?.nextSibling;
+        }
+      } while(node != null && node.nodeName == '#text');
+
+        console.log(node);
+      if(node != null) {
+        console.log(node.firstChild);
+        (<HTMLElement>node.firstChild)?.focus();
+      }
+    }
+
+    const change = (event: KeyboardEvent, todo: any) => {
+
+      if (event.key == 'Enter') {
+        event.stopImmediatePropagation();
+        event.preventDefault();
+        focusNext(todo.id);
+        return false;
+      }
+      if (event.key == 'ArrowDown') {
+        focusNext(todo.id);
+      }
+      if (event.key == 'ArrowUp') {
+        focusNext(todo.id, true);
+      }
+    };
+
+    let new_title = '';
+
+    const add = async (event: KeyboardEvent) => {
+
+      if (event.key == 'Enter') {
+        event.stopImmediatePropagation();
+        event.preventDefault();
+
+        const response : Response = await http.getData(PUBLIC_BACKEND_URL + '/api/todos/create?title=' + new_title);
+        if(response.status == 201) {
+          new_title = '';
+          let todo = await response.json();
+          console.log(todo);
+          todos.push(todo);
+          console.log(todos);
+        }
+        return false;
+      }
+
+      if (event.key == 'ArrowUp') {
+        focusNext(0, true);
+      }
+
+    }
+
+
 
 </script>
 
@@ -42,12 +102,14 @@
       </div>
 
       <div class=" m-5 p-2 border border-dashed border-gray-700 rounded-xl text-gray-200 h-screen">
-        <ul>
+        <ul class="flex flex-col">
         {#each todos as todo}
-          <li>{todo.title}</li>
+          <li id="list_{todo.id}" class="flex flex-col"><input class="text-gray-100 m-2 p-2 rounded-sm bg-gray-700 break-words" tabindex={todo.order} on:keydown={event => change(event, todo)} type="text" bind:value={todo.title}/></li>
+          <!--li id="list_{todo.id}" class="flex flex-col"><div role="textbox" tabindex={todo.order} on:keydown={event => change(event, todo)} contenteditable="true" class="text-gray-100 m-2 p-2 rounded-sm bg-gray-700">{todo.title}</div></li-->
         {/each}
+          <li id="list_0" class="flex flex-col"><input class="text-gray-100 m-2 p-2 rounded-sm bg-gray-800 break-words border-dashed border" on:keydown={event => add(event)} type="text" bind:value={new_title}/></li>
         </ul>
-        test
+        
 
       </div>
     </div>
