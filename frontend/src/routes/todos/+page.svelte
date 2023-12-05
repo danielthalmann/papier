@@ -10,6 +10,7 @@
     let todos: Array<any> = [];
     let projects: Array<any> = [];
     let lastTabIndex = 0;
+    let current: any;
 
     onMount(() => {
 
@@ -61,6 +62,12 @@
       }
     }
 
+    const focus = async (event: Event, todo: any) => {
+      
+      current = todo;
+
+    }
+
     const keypress = async (event: KeyboardEvent, todo: any) => {
 
       if (event.key == 'Enter') {
@@ -90,6 +97,7 @@
           event.preventDefault();
         }
       }
+      current = todo;
 
     };
 
@@ -175,17 +183,43 @@
           <Dropdown></Dropdown>
       </div>
 
-      <div class=" m-5 p-2 border border-dashed border-gray-700 rounded-xl text-gray-200 h-screen">
-        <ul class="flex flex-col">
-        {#each todos as todo}
-          <li id="list_{todo.id}" class="flex flex-col relative"><input class="text-gray-100 m-2 p-2 rounded-sm bg-gray-700 break-words" tabindex={todo.order} on:keydown={event => keypress(event, todo)} on:blur={event => blur(event, todo)} type="text" bind:value={todo.title}/><div class="absolute -mt-1 end-2"><Badge title="Badge"></Badge></div></li>
-          <!--li id="list_{todo.id}" class="flex flex-col"><div role="textbox" tabindex={todo.order} on:keydown={event => keypress(event, todo)} contenteditable="true" class="text-gray-100 m-2 p-2 rounded-sm bg-gray-700">{todo.title}</div></li-->
-        {/each}
-          <li id="list_0" class="flex flex-col"><input class="text-gray-100 m-2 p-2 rounded-sm bg-gray-800 break-words border-dashed border" tabindex={lastTabIndex} on:keydown={event => add(event)} type="text" bind:value={newTodo.title}/></li>
-        </ul>
-        
+      <div class="flex">
+        <div class="m-5 p-2 border border-dashed border-gray-700 rounded-xl text-gray-200 h-screen flex-grow">
+          <ul class="flex flex-col">
+          {#each todos as todo}
+            <li id="list_{todo.id}" class="flex flex-col relative">
+              <input class="text-gray-100 m-2 p-2 rounded-sm bg-gray-700 break-words" 
+                tabindex={todo.order} 
+                on:keydown={event => keypress(event, todo)} 
+                on:blur={event => blur(event, todo)} 
+                on:focus={event => focus(event, todo)} 
+                type="text" bind:value={todo.title}/>
+            </li>
+            <!--li id="list_{todo.id}" class="flex flex-col"><div role="textbox" tabindex={todo.order} on:keydown={event => keypress(event, todo)} contenteditable="true" class="text-gray-100 m-2 p-2 rounded-sm bg-gray-700">{todo.title}</div></li-->
+          {/each}
+            <li id="list_0" class="flex flex-col">
+              <input class="text-gray-100 m-2 p-2 rounded-sm bg-gray-800 break-words border-dashed border" 
+                tabindex={lastTabIndex} 
+                on:keydown={event => add(event)} 
+                bind:value={newTodo.title}
+                on:focus={() => {current = null}}
+                type="text" 
+              />
+            </li>
+          </ul>
+        </div>
 
+        {#if current}
+          <div  class="m-5 p-2 border border-dashed border-gray-700 rounded-xl text-gray-200 h-screen w-60">
+            {#if current}
+              
+            {/if}
+            {current.title}
+            <Badge title="Badge"></Badge>
+          </div>
+        {/if}
       </div>
+
     </div>
   </div>
 
