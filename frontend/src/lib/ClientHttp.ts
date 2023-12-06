@@ -106,7 +106,7 @@ class ClientHttp
             reqInit.body = JSON.stringify(data); 
         }
 
-        console.log(reqInit);
+        // console.log(reqInit);
         
         return fetch(url, reqInit).then((resp :Response) => {
 

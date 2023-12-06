@@ -68,7 +68,7 @@
     const focus = async (event: Event, todo: Todo) => {
       
       current = todo;
-      todo.hasChange = false;
+      todo.origin = {id : todo.id, title : todo.title, order: todo.order};
   
     }
 
@@ -102,7 +102,6 @@
         }
       }
       current = todo;
-      todo.hasChange = true;
 
     };
 
@@ -162,8 +161,8 @@
 
     const isDeleted = async (todo: Todo) : Promise<boolean> => {
 
-      if (!todo?.hasChange)
-        true;
+      if ((todo?.origin?.title == todo.title))
+        return false;
 
       if (todo.title == '') {
         const response : Response = await http.deleteData(PUBLIC_BACKEND_URL + '/api/todos/' + todo.id);
