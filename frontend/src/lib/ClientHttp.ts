@@ -28,6 +28,17 @@ class ClientHttp
     }
 
     /**
+     * execute query put at specified url
+     * 
+     * @param url url of the resource
+     * @param data data passed to url
+     */
+    async putData(url : string, data: object = {}) : Promise<Response>
+    {
+        return this.fetchData(url, "PUT", data);
+    }
+
+    /**
      * execute query get  at specified url
      * 
      * @param url url of the resource
@@ -91,7 +102,7 @@ class ClientHttp
             redirect: "follow", // manual, *follow, error
         };
 
-        if (method == 'POST') {
+        if (method == 'POST' || method == 'PUT') {
             reqInit.body = JSON.stringify(data); 
         }
 

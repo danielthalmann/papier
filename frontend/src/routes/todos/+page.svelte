@@ -5,12 +5,15 @@
     import { http } from "$lib/ClientHttp";
     import Dropdown from "$lib/components/Dropdown.svelte";
     import Badge from "$lib/components/Badge.svelte";
+    import type { Todo } from "$lib/types/Todo";
+    import type { Project } from "$lib/types/Project";
     
 
-    let todos: Array<any> = [];
-    let projects: Array<any> = [];
+    let todos: Array<Todo> = [];
+    let projects: Array<Project> = [];
     let lastTabIndex = 0;
-    let current: any;
+    let project: Project | null;
+    let current: Todo | null;
 
     onMount(() => {
 
@@ -62,13 +65,14 @@
       }
     }
 
-    const focus = async (event: Event, todo: any) => {
+    const focus = async (event: Event, todo: Todo) => {
       
       current = todo;
-
+      todo.hasChange = false;
+  
     }
 
-    const keypress = async (event: KeyboardEvent, todo: any) => {
+    const keypress = async (event: KeyboardEvent, todo: Todo) => {
 
       if (event.key == 'Enter') {
         event.stopImmediatePropagation();
@@ -98,6 +102,7 @@
         }
       }
       current = todo;
+      todo.hasChange = true;
 
     };
 
@@ -130,7 +135,35 @@
 
     }
 
-    const isDeleted = async (todo: any) : Promise<boolean> => {
+    const addProject = async (event: KeyboardEvent) => {
+
+      if (event.key == 'Enter' && newTodo.title != '') {
+        event.stopImmediatePropagation();
+        event.preventDefault();
+
+        const response : Response = await http.postData(PUBLIC_BACKEND_URL + '/api/todos/create', newTodo);
+        if(response.status == 201) {
+          newTodo.title = '';
+          let todo = await response.json();
+          todos.push(todo);
+          todos = todos;
+          lastTabIndex = todos[todos.length-1].order + 1;
+        }
+        return false;
+      }
+
+      if (event.key == 'ArrowUp') {
+        event.stopImmediatePropagation();
+        event.preventDefault();
+        focusNext(0, true);
+      }
+
+    }
+
+    const isDeleted = async (todo: Todo) : Promise<boolean> => {
+
+      if (!todo?.hasChange)
+        true;
 
       if (todo.title == '') {
         const response : Response = await http.deleteData(PUBLIC_BACKEND_URL + '/api/todos/' + todo.id);
@@ -147,12 +180,16 @@
             }
           }
         }
+      } else {
+
+        const response : Response = await http.putData(PUBLIC_BACKEND_URL + '/api/todos/' + todo.id, todo);
+
       }
       return false;
 
     }    
 
-    const blur = async (event: Event, todo: any) => {
+    const blur = async (event: Event, todo: Todo) => {
 
       isDeleted(todo);
 
@@ -173,6 +210,13 @@
         {#each projects as project}
           <li class="px-3 py-1 rounded-md leading-7 mb-2 border-gray-800 bg-gray-800">{project.name}</li>
         {/each}
+        <li class="flex flex-col">
+          <input class="text-gray-100 m-2 p-2 rounded-sm bg-gray-800 break-words border-dashed border" 
+            tabindex={lastTabIndex} 
+            on:keydown={event => addProject(event)} 
+            type="text" 
+          />
+        </li>        
       </ul>
     </nav>
   </div>
@@ -212,7 +256,7 @@
         {#if current}
           <div  class="m-5 p-2 border border-dashed border-gray-700 rounded-xl text-gray-200 h-screen w-60">
             {#if current}
-              
+              {current.project_id}
             {/if}
             {current.title}
             <Badge title="Badge"></Badge>

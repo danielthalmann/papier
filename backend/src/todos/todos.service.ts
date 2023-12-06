@@ -8,7 +8,7 @@ export class TodosService {
   
     async all( user_id: number): Promise<Array<Todo> | undefined> {
 
-        return this.prisma.todo.findMany({where : {user_id: user_id} });
+        return this.prisma.todo.findMany({where : {user_id: user_id}, orderBy : {order : 'asc'} });
 
     }
 
@@ -17,6 +17,22 @@ export class TodosService {
       return this.prisma.todo.findFirst({where : {id: id} });
 
     }
+
+    async update(id: number, title: string, project_id?: number | null): Promise<Todo> {
+
+      const todo = await this.prisma.todo.update({
+        where: {
+          id: id,
+        },
+        data: {
+          title: title,
+        },
+      })
+
+      return todo;
+  
+    }
+  
 
     async create(name: string, user_id: number, project_id?: number | null): Promise<Todo> {
 

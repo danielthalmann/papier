@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, Param, Post, Request, UnauthorizedException, UseGuards } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, Param, Post, Put, Request, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { TodosService } from './todos.service';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { TodoNewDto } from './dto/TodoNewDto';
@@ -25,6 +25,16 @@ export class TodosController {
     async create(@Body() newTodo: TodoNewDto, @Request() req : RequestWithUser ) {
 
       return this.todoService.create(newTodo.title, req.user.sub);
+
+    }
+
+    @HttpCode(HttpStatus.OK)
+    @UseGuards(AuthGuard)
+    @Put(':id')
+    // @Query() allQueryParams: { title?: string, page?: string }
+    async put(@Param('id') id: string, @Body() todo: any ) {
+       console.log (todo, id);
+      return this.todoService.update(~~id, todo.title);
 
     }
 
