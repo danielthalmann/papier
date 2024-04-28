@@ -7,7 +7,7 @@ export type Todo = {
     priority?: string;
     completed_at?: Date;
     due_at?: Date;
-    origin?: Todo,
+    origin?: Todo;
     updated_at?: Date;
     created_at?: Date;
 }

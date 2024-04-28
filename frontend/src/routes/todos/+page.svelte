@@ -8,6 +8,7 @@
     import type { Todo } from "$lib/types/Todo";
     import type { Project } from "$lib/types/Project";
     import TodoList from "$lib/components/TodoList.svelte";
+    import ProjectList from "$lib/components/ProjectList.svelte";
     
 
     // let todos: Array<Todo> = [];
@@ -18,7 +19,7 @@
     onMount(() => {
 
       // loadTodos();
-      loadProjects();
+      // loadProjects();
 
     });
 
@@ -34,6 +35,9 @@
   
 
     const addProject = async (event: KeyboardEvent) => {
+
+
+
     }
 
 </script>
@@ -46,6 +50,11 @@
       <div class="mx-auto text-zinc-600 uppercase text-lg font-bold">Papier</div>
     </div>
     <nav class="overflow-auto">
+
+      <ProjectList bind:current={project} ></ProjectList>
+
+
+<!--
       <ul role="list" class="flex flex-col text-gray-200">
         <li class="px-3 py-1 rounded-md leading-7 mb-2 border-gray-800 bg-gray-800">Root</li>
         {#each projects as project}
@@ -59,6 +68,8 @@
           />
         </li>        
       </ul>
+-->
+
     </nav>
   </div>
 
@@ -70,7 +81,7 @@
 
       <div class="flex">
         <div class="m-5 p-2 border border-dashed border-gray-700 rounded-xl text-gray-200 h-screen flex-grow">
-          <TodoList bind:current={current}></TodoList>
+          <TodoList bind:current={current} bind:project={project}></TodoList>
         </div>
 
         {#if current}

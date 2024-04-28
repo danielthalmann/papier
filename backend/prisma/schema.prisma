@@ -38,6 +38,7 @@ model ActivityLog {
 model Todo {
   id              Int @id @default(autoincrement())
   title           String
+  content         String?
   user_id         Int
   project_id      Int?
   order           Int?
@@ -54,6 +55,9 @@ model Project {
   id              Int @id @default(autoincrement())
   user_id         Int
   name            String
+  order           Int?
+  updated_at      DateTime?
+  created_at      DateTime?
   @@map("projects")
 }
 

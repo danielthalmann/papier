@@ -52,6 +52,7 @@
     const focus = async (event: Event, todo: Todo) => {
       
       current = todo;
+      // save the origin value
       todo.origin = {id : todo.id, title : todo.title, order: todo.order};
   
     }
@@ -61,26 +62,26 @@
       if (event.key == 'Enter') {
         event.stopImmediatePropagation();
         event.preventDefault();
-        if(! await isDeleted(todo))
+        if(! await updateTodo(todo))
           focusNext(todo.id);
         return false;
       }
       if (event.key == 'ArrowDown') {
         event.stopImmediatePropagation();
         event.preventDefault();
-        if(!await isDeleted(todo))
+        if(!await updateTodo(todo))
           focusNext(todo.id);
         return false;
       }
       if (event.key == 'ArrowUp') {
         event.stopImmediatePropagation();
         event.preventDefault();
-        //if(!await isDeleted(todo))
+        //if(!await updateTodo(todo))
         focusNext(todo.id, true);
         return false;
       }
       if (event.key == 'Tab') {
-        if(await isDeleted(todo)) {
+        if(await updateTodo(todo)) {
           event.stopImmediatePropagation();
           event.preventDefault();
         }
@@ -118,7 +119,13 @@
 
     }
 
-    const isDeleted = async (todo: Todo) : Promise<boolean> => {
+    /**
+     * Update todo item and return true if is deleted
+     * 
+     * @param todo
+     * @return bool 
+     */
+    const updateTodo = async (todo: Todo) : Promise<boolean> => {
 
         if ((todo?.origin?.title == todo.title))
             return false;
@@ -127,15 +134,16 @@
             const response : Response = await http.deleteData(PUBLIC_BACKEND_URL + '/api/todos/' + todo.id);
 
             if(response.status == 200) {
-                for(let i: number = 0; i < todos.length; i++) {
-                if (todos[i].id == todo.id) {
-                    todos.splice(i, 1);
-                    todos = todos;
-                    if (i == todos.length) {
-                    document.getElementById('list_0')?.focus();
-                    }
-                    return true;
-                }
+                for(let i: number = 0; i < todos.length; i++) 
+                {
+                  if (todos[i].id == todo.id) {
+                      todos.splice(i, 1);
+                      todos = todos;
+                      if (i == todos.length) {
+                      document.getElementById('list_0')?.focus();
+                      }
+                      return true;
+                  }
                 }
             }
         } else {
@@ -149,7 +157,7 @@
 
     const blur = async (event: Event, todo: Todo) => {
 
-        isDeleted(todo);
+        updateTodo(todo);
 
     }
 </script>
