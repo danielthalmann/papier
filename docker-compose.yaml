@@ -46,9 +46,11 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./volumes/database:/var/lib/postgresql/data
+      - papier_database:/var/lib/postgresql/data
     networks:
       - papier_network
 networks:
   papier_network:
     driver: bridge
+volumes:
+  papier_database:
