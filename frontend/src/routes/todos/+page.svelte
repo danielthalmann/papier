@@ -18,27 +18,7 @@
 
     onMount(() => {
 
-      // loadTodos();
-      // loadProjects();
-
     });
-
-    const loadProjects = async () => {
-      const response : Response = await http.getData(PUBLIC_BACKEND_URL + '/api/projects');
-      if(response.status == 200) {
-        projects = await response.json();
-      }
-      if(response.status == 401) {
-        document.location.href = "/login";
-      }
-    }
-  
-
-    const addProject = async (event: KeyboardEvent) => {
-
-
-
-    }
 
 </script>
 
@@ -47,7 +27,7 @@
 
   <div class="flex flex-col z-50 fixed w-64 border-r border-gray-700 h-screen p-3">
     <div class="flex flex-row my-5">
-      <div class="mx-auto text-zinc-600 uppercase text-lg font-bold">Papier</div>
+      <div class="mx-auto text-zinc-600 uppercase text-lg font-bold">Papier {project?.name}</div>
     </div>
     <nav class="overflow-auto">
 

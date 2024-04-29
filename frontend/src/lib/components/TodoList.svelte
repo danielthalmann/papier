@@ -10,6 +10,12 @@
     export let project: Project | null = null;
     let lastTabIndex = 0;
 
+    $: if (project) {
+
+      loadTodos();
+
+    }
+
     onMount(() => {
 
         loadTodos();
@@ -18,8 +24,9 @@
 
     const loadTodos = async () => {
 
+      console.log("loadTodos");
       const response : Response = await http.getData(PUBLIC_BACKEND_URL + '/api/todos?project_id=' + (project ? project?.id : '' ));
-      if(response.status == 200) {
+      if(response.status == 200 || response.status == 304) {
         todos = await response.json();
       }
       if(response.status == 401) {

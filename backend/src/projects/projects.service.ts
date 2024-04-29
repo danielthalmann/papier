@@ -35,7 +35,7 @@ export class ProjectsService {
     }
     
   
-    async create(name: string, user_id: number, project_id?: number | null): Promise<Project> {
+    async create(name: string, user_id: number): Promise<Project> {
   
         const lastProject = await this.prisma.project.findFirst({ orderBy : { id : "desc"} });
         let order = 1;
